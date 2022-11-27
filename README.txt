@@ -1,10 +1,10 @@
 # ServerCraft
 A tool that makes it easy, quick, and simple to install a minecraft server with a large variety of configurations.
 Prerequisites (For exe users):
-Java JDK 17
+Java JDK 18
 
 Prerequisites (For users running the python script directly):
-Java JDK 17, Python 3, as well as the following python module(s): requests
+Java JDK 18, Python 3, as well as the following python module(s): requests
 
 How to setup (Executable File):
 Download the latest EXE file from the releases section on the github. Run the EXE.
@@ -43,3 +43,5 @@ The name of the server does not matter.
 At the end of the ip address, type ':25565', or replace 25565 with the port you chose in server.properties.
 You should now be able to join the server on your local network using that ip adress.
 If you cannot connect, check the firewall and network rules on your host machine.
+
+NOTE: If you run into Java errors while running the server.jar file, check your Java JDK installation, and make sure you have the correct version for the minecraft server version you are running. JDK 18 should cover most server.jars, but some older releases may need an older JDK.
