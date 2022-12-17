@@ -64,7 +64,7 @@ print("(1000MB = 1GB)")
 print("Now, the server will be downloaded and we can get to the fun part. Running your server!")
 print("Note: The server will be automatically installed to the desktop in a folder with the name you previously chose, but you can always move the server after the installation is complete.")
 if configuration_type == 'standard':
-    version = input("One last thing. What version of minecraft would you like to run your server on? (Use x.x.x format Example: 1.19.2 | 1.2.5 - Latest release compatible) List of versions here: https://mcversions.net/")
+    version = input("One last thing. What version of minecraft would you like to run your server on? (Use x.x.x format Example: 1.19.3 | 1.2.5 - Latest release compatible) List of versions here: https://mcversions.net/")
     if version not in vanilla_server_urls:
         incorrectversion = True
     while incorrectversion == True:
