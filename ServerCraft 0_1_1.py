@@ -15,7 +15,7 @@ print("This is a very early version of this application. It only supports vanill
 print("will include support for other server softwares. The server softwares listed other than vanilla will not actually function.")
 print("Also, it is reccommended to maximize the console window you are running this in for the best readability.")
 input("Press enter if you understand.")
-print("ServerCraft V 0.1.0")
+print("ServerCraft V 0.1.1")
 print("Welcome to ServerCraft: an application to easily and quickly install a Minecraft server!")
 print("Note: This project/application is not affilated with Mojang, Microsoft, or any official Minecraft branding.")
 print("Next major update: Bungeecord support. Will add the ability to setup a bungeecord network of multiple Minecraft servers.")
