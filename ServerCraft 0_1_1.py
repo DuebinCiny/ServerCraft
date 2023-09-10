@@ -4,18 +4,29 @@
 import pickle
 import os
 import requests
-# startup tasks
+import subprocess
+# define messages
+def exit_message():
+    print("Your server is now ready!")
+    print("Note: This server will only be available on your local network. In order for players outside your network to join,")
+    print("you must portfoward, which this tool cannot aid in. Search 'How to port foward' on youtube if you would like to do so")
+    print("but be careful as it can decrease the security of your home network. Go to the server folder on your desktop and")
+    print("run start.bat It will create a eula.txt file (this may take a moment). Open eula.txt and change 'False' to 'True'")
+    print("and run the start.bat file again. The server should now be running!")
+
 current_directory = os.path.dirname(__file__)
 incorrectversion = False
 desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 with open(current_directory + r"\\vanilla_server_urls.pkl", "rb") as handle:
     vanilla_server_urls = pickle.load(handle)
+with open(current_directory + r"\\spigot_server_urls.pkl", "rb") as handle:
+    spigot_server_urls = pickle.load(handle)
 # Intro
 print("This is a very early version of this application. It only supports vanilla servers at this time, and future builds")
 print("will include support for other server softwares. The server softwares listed other than vanilla will not actually function.")
 print("Also, it is reccommended to maximize the console window you are running this in for the best readability.")
 input("Press enter if you understand.")
-print("ServerCraft V 0.1.1")
+print("ServerCraft V 0.2.0")
 print("Welcome to ServerCraft: an application to easily and quickly install a Minecraft server!")
 print("Note: This project/application is not affilated with Mojang, Microsoft, or any official Minecraft branding.")
 print("Next major update: Bungeecord support. Will add the ability to setup a bungeecord network of multiple Minecraft servers.")
@@ -63,8 +74,10 @@ print("(1000MB = 1GB)")
 (ram_xmx) = str(input("What would you like the max memory consumtion of the server to be? Please enter the value as a number in megabytes (MB). For best relability, it is recommended you do not give more than half of your computer's RAM to the server, otherwise this could cause instabilities and crashes."))
 print("Now, the server will be downloaded and we can get to the fun part. Running your server!")
 print("Note: The server will be automatically installed to the desktop in a folder with the name you previously chose, but you can always move the server after the installation is complete.")
+path = os.path.join(desktop, name)
 if configuration_type == 'standard':
-    version = input("One last thing. What version of minecraft would you like to run your server on? (Use x.x.x format Example: 1.19.3 | 1.2.5 - Latest release compatible) List of versions here: https://mcversions.net/")
+    print("One last thing. What version of minecraft would you like to run your server on? (Use x.x.x format Example: 1.19.4 | 1.2.5 - Latest release compatible) List of versions here: https://mcversions.net/")
+    version = input("")
     if version not in vanilla_server_urls:
         incorrectversion = True
     while incorrectversion == True:
@@ -72,25 +85,48 @@ if configuration_type == 'standard':
             version = input("You have entered an incorrect version. Please enter a valid version selection.")
         if version in vanilla_server_urls:
             incorrectversion = False
-    path = os.path.join(desktop, name)
     os.mkdir(path)
+    print("Downloading.....")
     server_url = vanilla_server_urls.get(version)
     response = requests.get(server_url)
     open(path + r"\\server.jar", "wb").write(response.content)
-    if input("Would you like to enable the server GUI? Otherwise it will just display a command prompt.") == 'yes':
-        nogui = False
-    else:
-        nogui = True
-    print("The command prompt output will be enabled by default but it can be disabled by adding a second line '@echo off' to the start.bat file in the " + name + " folder.")
-    if nogui:
+    print("Done!")
+    gui_response = input("Would you like to enable the server GUI? Otherwise it will just display a command prompt.")
+    if gui_response == 'n':
         batchfile = open(path + r'\\start.bat','w+')
         batchfile.write('java -Xmx' + ram_xmx + 'M -Xms' + ram_xms + 'M -jar server.jar nogui')
         batchfile.close()
-    if not nogui:
+        print("The command prompt output will be enabled by default but it can be disabled by adding a second line '@echo off' to the start.bat file in the " + name + " folder.")
+    if gui_response == 'y':
         batchfile = open(path + r'\\start.bat','w+')
-        batchfile.write('java -Xmx' + ram_xmx + 'M -Xms' + ram_xms + 'M -jar server.jar')
+        batchfile.write("java -Xmx" + ram_xmx + 'M -Xms' + ram_xms + 'M -jar server.jar')
         batchfile.close()
-    print("Setup Complete! Run the start.bat file in the " + name + " folder and open the eula.txt file that is generated. Then, change false to true, save the document and run the start.bat again.")
-    print("Your server is now ready!")
-    print("Note: This server will only be available on your local network. In order for players outside your network to join, you must portfoward, which this tool cannot aid in.")
-    input("Thank you for using ServerCraft! I hope it was useful to you! Press enter to close the application.")
+    exit_message()
+    input("Thank you for using ServerCraft! Press enter to close the application.")
+elif configuration_type == 'spigot':
+    version = input("One last thing. What version of minecraft would you like to run your server on? (Use x.x.x format Example: 1.19.4) List of versions here: https://getbukkit.org/download/spigot")
+    if version not in spigot_server_urls:
+        incorrectversion = True
+    while incorrectversion == True:
+        if version not in spigot_server_urls:
+            version = input("You have entered an incorrect version. Please enter a valid version selection.")
+        if version in spigot_server_urls:
+            incorrectversion = False
+    os.mkdir(path)
+    print("Downloading...")
+    server_url = spigot_server_urls.get(version)
+    response = requests.get(server_url)
+    open(path + r"\\server.jar", "wb").write(response.content)
+    print("Done!")
+    gui_response = input("Would you like to enable the server GUI? Otherwise it will just display a command prompt.")
+    if gui_response == 'n':
+        batchfile = open(path + r'\\start.bat','w+')
+        batchfile.write('java -Xmx' + ram_xmx + 'M -Xms' + ram_xms + 'M -jar server.jar nogui')
+        batchfile.close()
+        print("The command prompt output will be enabled by default but it can be disabled by adding a second line '@echo off' to the start.bat file in the " + name + " folder.")
+    if gui_response == 'y':
+        batchfile = open(path + r'\\start.bat','w+')
+        batchfile.write("java -Xmx" + ram_xmx + 'M -Xms' + ram_xms + 'M -jar server.jar')
+        batchfile.close()
+    exit_message()
+    input("Thank you for using ServerCraft! Press enter to close the application.")
